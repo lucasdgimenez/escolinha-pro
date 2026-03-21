@@ -1,0 +1,33 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(wmic logicaldisk:*)",
+      "Bash(docker compose:*)",
+      "Bash(docker ps:*)",
+      "Bash(docker info:*)",
+      "Bash(docker version:*)",
+      "Bash(powershell -Command \"Get-Process -Name 'com.docker.backend','Docker Desktop' -ErrorAction SilentlyContinue | Select-Object Name,CPU,WorkingSet | Format-Table -AutoSize\" 2>&1)",
+      "Bash(powershell -Command \"Get-Process -Name 'docker' -ErrorAction SilentlyContinue | Select-Object Name,Id,CPU | Format-Table -AutoSize\" 2>&1)",
+      "Bash(powershell -Command \"Get-Process -Name ''docker'' -ErrorAction SilentlyContinue | Stop-Process -Force\")",
+      "Bash(powershell -Command \"& docker version\" 2>&1)",
+      "Bash(powershell -Command \"Get-Process -Name 'docker' | Select-Object Id,Name,CPU | Format-Table; Stop-Process -Name 'docker' -Force -ErrorAction SilentlyContinue; Write-Host 'Done'\" 2>&1)",
+      "Bash(powershell -Command \"Start-Process -Wait -NoNewWindow -FilePath 'docker' -ArgumentList 'version' -RedirectStandardOutput 'C:\\\\Temp\\\\docker_test.txt' -RedirectStandardError 'C:\\\\Temp\\\\docker_test_err.txt'; Get-Content 'C:\\\\Temp\\\\docker_test.txt'; Get-Content 'C:\\\\Temp\\\\docker_test_err.txt'\" 2>&1)",
+      "Bash(echo $PATH)",
+      "Bash(powershell -Command \"Get-Process -Name 'docker','docker-compose' -ErrorAction SilentlyContinue | Stop-Process -Force; Write-Host 'Killed'; Start-Sleep -Seconds 2; Get-Process -Name 'docker' -ErrorAction SilentlyContinue | Select-Object Id,Name\")",
+      "Bash(grep -l \"1.1\\\\|docker\\\\|ambiente\" C:UsersLucas.claudeplans*.md)",
+      "Bash(for f:*)",
+      "Bash(do echo:*)",
+      "Read(//c/Users/Lucas/Documents/Projetos/laravel/escolinha-pro/**)",
+      "Bash(done)",
+      "Bash(docker run:*)",
+      "Bash(docker buildx:*)",
+      "Bash(docker manifest:*)",
+      "Bash(docker image:*)",
+      "Bash(docker pull:*)"
+    ]
+  },
+  "enableAllProjectMcpServers": true,
+  "enabledMcpjsonServers": [
+    "laravel-boost"
+  ]
+}
