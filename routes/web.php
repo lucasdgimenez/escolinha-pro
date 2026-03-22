@@ -16,6 +16,7 @@ Route::middleware('guest')->group(function () {
     Route::livewire('/login', 'pages::auth.login')->name('login');
     Route::livewire('/esqueci-a-senha', 'pages::auth.forgot-password')->name('password.request');
     Route::livewire('/redefinir-senha/{token}', 'pages::auth.reset-password')->name('password.reset');
+    Route::livewire('/convite/{token}', 'pages::auth.accept-invitation')->name('invitation.accept');
 });
 
 Route::middleware('auth')->group(function () {
@@ -31,7 +32,15 @@ Route::middleware('auth')->group(function () {
         return redirect()->route('login');
     })->name('logout');
 
-    Route::middleware('verified')->group(function () {
+    Route::livewire('/portal', 'pages::portal')->name('portal');
+
+    Route::middleware(['verified', 'role:super_admin,academy_director,coach'])->group(function () {
         Route::livewire('/dashboard', 'pages::dashboard')->name('dashboard');
+    });
+
+    Route::middleware(['verified', 'role:super_admin,academy_director'])->group(function () {
+        Route::livewire('/convites', 'pages::invitations.index')->name('invitations.index');
+        Route::livewire('/academia', 'pages::academy.profile')->name('academy.profile');
+        Route::livewire('/categorias', 'pages::academy.categories')->name('academy.categories');
     });
 });

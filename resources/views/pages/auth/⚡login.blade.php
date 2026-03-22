@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\RoleSlug;
 use App\Livewire\Forms\LoginForm;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
@@ -24,7 +25,16 @@ new #[Layout('layouts::guest')] #[Title('Entrar')] class extends Component
 
         session()->regenerate();
 
-        $this->redirect(route('dashboard'), navigate: true);
+        $user = auth()->user();
+
+        $route = match ($user->role->slug) {
+            RoleSlug::SuperAdmin,
+            RoleSlug::AcademyDirector,
+            RoleSlug::Coach => 'dashboard',
+            default         => 'portal',
+        };
+
+        $this->redirect(route($route), navigate: true);
     }
 };
 ?>

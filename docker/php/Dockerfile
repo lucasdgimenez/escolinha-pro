@@ -19,6 +19,10 @@ COPY docker/php/local.ini /usr/local/etc/php/conf.d/local.ini
 
 WORKDIR /var/www/html
 
+RUN mkdir -p storage/framework/views storage/framework/cache storage/framework/sessions storage/logs bootstrap/cache \
+    && chown -R www-data:www-data storage bootstrap/cache \
+    && chmod -R 775 storage bootstrap/cache
+
 EXPOSE 9000
 
 CMD ["php-fpm"]

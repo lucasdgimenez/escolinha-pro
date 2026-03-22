@@ -10,6 +10,7 @@ services:
     working_dir: /var/www/html
     volumes:
       - .:/var/www/html
+      - ./docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini:ro
     env_file:
       - .env.docker
     networks:
@@ -79,6 +80,7 @@ services:
     working_dir: /var/www/html
     volumes:
       - .:/var/www/html
+      - ./docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini:ro
       - ./docker/supervisor/supervisord.conf:/etc/supervisor/conf.d/supervisord.conf:ro
     env_file:
       - .env.docker

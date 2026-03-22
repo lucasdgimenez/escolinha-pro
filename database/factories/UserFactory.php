@@ -65,4 +65,34 @@ class UserFactory extends Factory
             )->id,
         ]);
     }
+
+    public function coach(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'role_id' => Role::firstOrCreate(
+                ['slug' => RoleSlug::Coach->value],
+                ['name' => 'Treinador']
+            )->id,
+        ]);
+    }
+
+    public function guardian(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'role_id' => Role::firstOrCreate(
+                ['slug' => RoleSlug::Parent->value],
+                ['name' => 'Responsável']
+            )->id,
+        ]);
+    }
+
+    public function player(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'role_id' => Role::firstOrCreate(
+                ['slug' => RoleSlug::Player->value],
+                ['name' => 'Atleta']
+            )->id,
+        ]);
+    }
 }

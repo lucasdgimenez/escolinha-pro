@@ -11,4 +11,20 @@ abstract class TestCase extends BaseTestCase
         parent::setUp();
         $this->withoutVite();
     }
+
+    protected function refreshApplication(): void
+    {
+        $this->app = $this->createApplication();
+        $this->getEnvironmentSetUp($this->app);
+    }
+
+    protected function getEnvironmentSetUp($app): void
+    {
+        $app['config']->set('database.default', 'sqlite');
+        $app['config']->set('database.connections.sqlite', [
+            'driver' => 'sqlite',
+            'database' => ':memory:',
+            'prefix' => '',
+        ]);
+    }
 }
