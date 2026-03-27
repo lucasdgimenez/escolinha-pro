@@ -42,5 +42,8 @@ Route::middleware('auth')->group(function () {
         Route::livewire('/convites', 'pages::invitations.index')->name('invitations.index');
         Route::livewire('/academia', 'pages::academy.profile')->name('academy.profile');
         Route::livewire('/categorias', 'pages::academy.categories')->name('academy.categories');
+        Route::livewire('/atletas', 'pages::players.index')->name('players.index');
+        Route::livewire('/atletas/novo', 'pages::players.create')->name('players.create');
+        Route::livewire('/atletas/importar', 'pages::players.import')->name('players.import');
     });
 });
