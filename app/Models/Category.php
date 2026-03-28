@@ -7,6 +7,8 @@ use Database\Factories\CategoryFactory;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Category extends Model
 {
@@ -30,5 +32,15 @@ class Category extends Model
             'min_age' => 'integer',
             'max_age' => 'integer',
         ];
+    }
+
+    public function players(): HasMany
+    {
+        return $this->hasMany(Player::class);
+    }
+
+    public function coaches(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'coach_category', 'category_id', 'coach_id')->withTimestamps();
     }
 }

@@ -36,11 +36,14 @@ Route::middleware('auth')->group(function () {
 
     Route::middleware(['verified', 'role:super_admin,academy_director,coach'])->group(function () {
         Route::livewire('/dashboard', 'pages::dashboard')->name('dashboard');
+        Route::livewire('/jogadores', 'pages::players.index')->name('players.index');
+        Route::livewire('/jogadores/criar', 'pages::players.create')->name('players.create');
     });
 
     Route::middleware(['verified', 'role:super_admin,academy_director'])->group(function () {
         Route::livewire('/convites', 'pages::invitations.index')->name('invitations.index');
         Route::livewire('/academia', 'pages::academy.profile')->name('academy.profile');
         Route::livewire('/categorias', 'pages::academy.categories')->name('academy.categories');
+        Route::livewire('/treinadores/atribuicoes', 'pages::coaches.assignments')->name('coaches.assignments');
     });
 });

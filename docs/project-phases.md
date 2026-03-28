@@ -264,31 +264,72 @@ Each phase contains:
 
 ---
 
-# Phase 6 — Training Plans
+# Phase 5.5 — FitSoft API Integration (pre-requisite for Phase 6)
 
-## 6.1 Exercise Library (US-6.1)
-- [ ] Global exercise library CRUD (managed by super_admin)
-- [ ] Seed `exercise_objectives`: `Technical`, `Physical`, `Tactical`
-- [ ] Exercises searchable and filterable by objective
-- [ ] Exercise detail view with video link
+> This phase must be completed before Phase 6. See `docs/future/integracao-fitsoft.md` for full context.
+> The exercise library, training plan builder, and AI features in Phase 6 are **powered by FitSoft's API** — Escolinha Pro does not duplicate this infrastructure locally.
+
+## 5.5.1 FitSoft: Secure the Existing API
+- [ ] Protect all existing endpoints with `auth:sanctum` middleware
+- [ ] Replace insecure `user_id` query param with `auth()->user()` in `ApiController`
+- [ ] Prefix all routes with `/api/v1/`
+- [ ] Configure `config/cors.php` to accept requests from Escolinha Pro domain
+
+## 5.5.2 FitSoft: Create API Resources & Missing Endpoints
+- [ ] Create `ExerciseResource`, `TrainingPlanResource`, `TrainingSessionResource`
+- [ ] Ensure all required endpoints exist (see `integracao-fitsoft.md` § 1.3)
+
+## 5.5.3 FitSoft: Generate Service Account Token
+- [ ] Create service user `escolinha-pro@fitsoft.app` in FitSoft
+- [ ] Generate Personal Access Token via tinker and copy to Escolinha Pro `.env` as `FITSOFT_API_KEY`
+
+## 5.5.4 Escolinha Pro: HTTP Client Setup
+- [ ] Add `fitsoft` block to `config/services.php` (`url`, `api_key`)
+- [ ] Add `FITSOFT_API_URL` and `FITSOFT_API_KEY` to `.env` and `.env.example`
+- [ ] Create `app/Services/FitSoftApiService.php` with methods: `getExercises()`, `getExercise()`, `createTrainingPlan()`, `generateTrainingPlan()`, `importPlanFromPhoto()`
+- [ ] Create `app/Exceptions/FitSoftApiException.php`
+- [ ] Add `HasApiTokens` trait to `User` model (required for Sanctum token issuance if needed)
 
 **Tests:**
-- [ ] Exercise created and visible to all tenants
-- [ ] Objective linked correctly
+- [ ] `FitSoftApiService::getExercises()` returns exercises (use `Http::fake()`)
+- [ ] `FitSoftApiService::generateTrainingPlan()` returns AI-generated plan (use `Http::fake()`)
+- [ ] `FitSoftApiException` thrown on non-2xx response
+- [ ] Unavailable API shows user-facing error in pt-BR
+
+---
+
+# Phase 6 — Training Plans
+
+> **FitSoft dependency:** All exercise and plan data lives in FitSoft. Escolinha Pro stores only local references (`fitsoft_plan_id`) and assignment metadata. Phase 5.5 must be complete before starting this phase.
+
+## 6.1 Exercise Library via FitSoft API (US-6.1)
+- [ ] Livewire component fetches exercises via `FitSoftApiService::getExercises()` (no local exercise table)
+- [ ] Support filters: objective (`Technical`, `Physical`, `Tactical`) and free-text search
+- [ ] Exercise detail view loads from `FitSoftApiService::getExercise($id)` (includes video link)
+
+**Tests:**
+- [ ] Exercise list renders with `Http::fake()` returning mocked FitSoft response
+- [ ] Filters pass correct query params to the API call
+- [ ] Exercise detail displays video link from API response
 
 ---
 
 ## 6.2 Training Plan Builder (US-6.2, US-6.3)
 - [ ] Seed `training_plan_statuses`: `draft`, `published`
-- [ ] Create plan (title, description, category or player target, status)
-- [ ] Add exercises from library with custom order, duration override, and per-exercise notes
+- [ ] Create plan form (title, description, category or player target, status)
+- [ ] Exercise selector in wizard calls `FitSoftApiService::getExercises()` to populate options
+- [ ] On save: send assembled plan to FitSoft via `FitSoftApiService::createTrainingPlan()`; persist local record with `fitsoft_plan_id` reference
+- [ ] AI-generated plan: call `FitSoftApiService::generateTrainingPlan($playerProfile)`; persist result locally
+- [ ] Photo import: call `FitSoftApiService::importPlanFromPhoto($base64Image)`; persist result locally
 - [ ] Publish plan: visible to assigned players (15+) in their portal
-- [ ] Duplicate plan: creates new draft, independent of original
+- [ ] Duplicate plan: creates new local draft, independent of original (does not call FitSoft)
 
 **Tests:**
-- [ ] Plan saved with exercises in correct order
+- [ ] Plan saved locally with correct `fitsoft_plan_id` after API call (use `Http::fake()`)
+- [ ] AI generation stores returned plan locally
+- [ ] Photo import stores returned plan locally
 - [ ] Published plan visible to assigned players
-- [ ] Duplicate creates independent draft
+- [ ] Duplicate creates independent local draft without hitting FitSoft API
 
 ---
 
@@ -386,12 +427,15 @@ Each phase contains:
 ---
 
 ## 9.2 Training Session Suggestions (US-7.3)
-- [ ] "Suggest Session" endpoint: input = category + recent weak evaluation areas
+> **FitSoft dependency:** AI generation is delegated to `FitSoftApiService::generateTrainingPlan()` with evaluation gap context as input. Phase 5.5 must be complete.
+
+- [ ] "Suggest Session" action: input = category + recent weak evaluation areas (from Phase 5 data)
+- [ ] Call `FitSoftApiService::generateTrainingPlan($playerProfile)` passing evaluation gaps as context
 - [ ] Returns 3 exercise suggestions with name, objective, and rationale in Portuguese
-- [ ] Coach can add any suggestion directly to a training plan
+- [ ] Coach can add any suggestion directly to a training plan (triggers Phase 6 plan builder)
 
 **Tests:**
-- [ ] Suggestions returned based on input data
+- [ ] Suggestions returned based on input data (use `Http::fake()` for FitSoft API)
 - [ ] Response is stateless (not stored)
 
 ---
