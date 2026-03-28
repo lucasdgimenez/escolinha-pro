@@ -35,4 +35,9 @@ class Tenant extends Model
     {
         return $this->hasMany(Category::class);
     }
+
+    public function players(): HasMany
+    {
+        return $this->hasMany(Player::class);
+    }
 }

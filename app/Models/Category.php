@@ -27,10 +27,10 @@ class Category extends Model
     protected function casts(): array
     {
         return [
-            'is_active' => 'boolean',
+            'is_active'   => 'boolean',
             'monthly_fee' => 'decimal:2',
-            'min_age' => 'integer',
-            'max_age' => 'integer',
+            'min_age'     => 'integer',
+            'max_age'     => 'integer',
         ];
     }
 

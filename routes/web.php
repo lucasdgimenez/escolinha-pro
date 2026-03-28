@@ -38,6 +38,7 @@ Route::middleware('auth')->group(function () {
         Route::livewire('/dashboard', 'pages::dashboard')->name('dashboard');
         Route::livewire('/jogadores', 'pages::players.index')->name('players.index');
         Route::livewire('/jogadores/criar', 'pages::players.create')->name('players.create');
+        Route::livewire('/jogadores/importar', 'pages::players.import')->name('players.import');
     });
 
     Route::middleware(['verified', 'role:super_admin,academy_director'])->group(function () {

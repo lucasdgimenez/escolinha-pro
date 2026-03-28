@@ -3,19 +3,18 @@
 namespace App\Models;
 
 use App\Enums\DominantFoot;
-use App\Enums\Position;
+use App\Enums\PlayerPosition;
 use App\Models\Concerns\HasTenant;
 use Database\Factories\PlayerFactory;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Player extends Model
 {
     /** @use HasFactory<PlayerFactory> */
-    use HasFactory, HasTenant, HasUuids, SoftDeletes;
+    use HasFactory, HasTenant, HasUuids;
 
     protected $fillable = [
         'tenant_id',
@@ -34,7 +33,7 @@ class Player extends Model
     {
         return [
             'date_of_birth' => 'date',
-            'position' => Position::class,
+            'position'      => PlayerPosition::class,
             'dominant_foot' => DominantFoot::class,
         ];
     }

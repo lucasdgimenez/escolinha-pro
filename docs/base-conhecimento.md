@@ -72,6 +72,39 @@ Isso altera o config **diretamente** (bypassando o Dotenv), então o `RefreshDat
 
 ---
 
+## wire:navigate trunca o HTML quando há espaço extra após o atributo
+
+**Problema:** Link no sidebar não aparece mesmo estando no mesmo bloco `@if` que outros links que aparecem corretamente.
+
+**Causa:** O parser HTML do Livewire 4 trunca o HTML ao encontrar `wire:navigate ` com um espaço em branco extra antes da quebra de linha. Por exemplo:
+
+```html
+<!-- ❌ Quebra o parser — espaço após wire:navigate -->
+<a href="{{ route('players.index') }}" wire:navigate
+   class="...">
+
+<!-- ✅ Correto — sem espaço antes da quebra de linha -->
+<a href="{{ route('players.index') }}" wire:navigate
+   class="...">
+```
+
+O parser interpreta o atributo mal formado e descarta tudo que vem depois no mesmo bloco `@if`, mesmo sendo HTML válido para browsers.
+
+**Solução:** Remover o espaço extra após `wire:navigate` e limpar o cache de views:
+
+```bash
+docker compose exec -u www-data escolinhapro_app_fpm php artisan view:clear
+```
+
+Se `view:clear` não resolver (views compiladas antigas ainda em uso pelo processo PHP-FPM), reiniciar o container:
+
+```bash
+docker compose restart escolinhapro_app_fpm escolinhapro_app_nginx
+docker compose exec -u www-data escolinhapro_app_fpm php artisan view:clear
+```
+
+---
+
 ## tempnam(): file created in the system's temporary directory
 
 **Problema:** Erro no browser ao acessar qualquer página com Livewire. O Laravel converte o warning do PHP em exceção.

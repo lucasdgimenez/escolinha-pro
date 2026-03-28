@@ -3,7 +3,7 @@
 namespace Database\Factories;
 
 use App\Enums\DominantFoot;
-use App\Enums\Position;
+use App\Enums\PlayerPosition;
 use App\Models\Player;
 use App\Models\Tenant;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -15,17 +15,15 @@ class PlayerFactory extends Factory
 {
     public function definition(): array
     {
-        $birthYear = now()->year - fake()->numberBetween(5, 17);
-
         return [
-            'tenant_id' => Tenant::factory(),
-            'category_id' => null,
-            'name' => fake()->name(),
-            'date_of_birth' => fake()->dateTimeBetween("{$birthYear}-01-01", "{$birthYear}-12-31")->format('Y-m-d'),
-            'position' => fake()->randomElement(Position::cases())->value,
-            'dominant_foot' => fake()->randomElement(DominantFoot::cases())->value,
-            'photo_path' => null,
-            'guardian_name' => fake()->name(),
+            'tenant_id'      => Tenant::factory(),
+            'category_id'    => null,
+            'name'           => fake()->name(),
+            'date_of_birth'  => fake()->dateTimeBetween('-17 years', '-5 years')->format('Y-m-d'),
+            'position'       => fake()->randomElement(PlayerPosition::cases()),
+            'dominant_foot'  => fake()->randomElement(DominantFoot::cases()),
+            'photo_path'     => null,
+            'guardian_name'  => fake()->name(),
             'guardian_email' => fake()->unique()->safeEmail(),
             'guardian_phone' => fake()->phoneNumber(),
         ];

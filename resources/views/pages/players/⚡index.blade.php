@@ -37,9 +37,14 @@ new #[Title('Atletas')] class extends Component
 <div>
     <div class="flex items-center justify-between mb-6">
         <h2 class="text-xl font-semibold text-gray-800">Atletas</h2>
-        <a href="{{ route('players.create') }}" wire:navigate>
-            <x-button type="button">Cadastrar atleta</x-button>
-        </a>
+        <div class="flex gap-3">
+            <a href="{{ route('players.import') }}" wire:navigate class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
+                Importar CSV
+            </a>
+            <a href="{{ route('players.create') }}" wire:navigate class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-primary-600 rounded-lg hover:bg-primary-700 transition-colors">
+                Novo atleta
+            </a>
+        </div>
     </div>
 
     <div class="mb-4">
@@ -62,8 +67,8 @@ new #[Title('Atletas')] class extends Component
                         <th class="pb-3 pr-4">Nome</th>
                         <th class="pb-3 pr-4">Categoria</th>
                         <th class="pb-3 pr-4">Posição</th>
+                        <th class="pb-3 pr-4">Pé dominante</th>
                         <th class="pb-3 pr-4">Responsável</th>
-                        <th class="pb-3 pr-4">Contato</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-100">
@@ -85,8 +90,8 @@ new #[Title('Atletas')] class extends Component
                             <td class="py-3 pr-4 font-medium">{{ $player->name }}</td>
                             <td class="py-3 pr-4">{{ $player->category?->name ?? '—' }}</td>
                             <td class="py-3 pr-4">{{ $player->position->label() }}</td>
+                            <td class="py-3 pr-4">{{ $player->dominant_foot->label() }}</td>
                             <td class="py-3 pr-4">{{ $player->guardian_name }}</td>
-                            <td class="py-3 pr-4">{{ $player->guardian_email }}</td>
                         </tr>
                     @endforeach
                 </tbody>

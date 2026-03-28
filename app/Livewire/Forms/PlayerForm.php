@@ -2,71 +2,48 @@
 
 namespace App\Livewire\Forms;
 
-use App\Enums\DominantFoot;
-use App\Enums\Position;
-use Illuminate\Validation\Rule;
+use Livewire\Attributes\Validate;
 use Livewire\Form;
 
 class PlayerForm extends Form
 {
+    #[Validate('required|string|max:255')]
     public string $name = '';
 
-    public string $dateOfBirth = '';
+    #[Validate('required|date|before:today')]
+    public string $date_of_birth = '';
 
+    #[Validate('required|string')]
     public string $position = '';
 
-    public string $dominantFoot = '';
+    #[Validate('required|string')]
+    public string $dominant_foot = '';
 
-    public string $guardianName = '';
+    #[Validate('required|string|max:255')]
+    public string $guardian_name = '';
 
-    public string $guardianEmail = '';
+    #[Validate('required|email|max:255')]
+    public string $guardian_email = '';
 
-    public ?string $guardianPhone = null;
-
-    public function rules(): array
-    {
-        return [
-            'name' => ['required', 'string', 'max:255'],
-            'dateOfBirth' => ['required', 'date', 'before:today'],
-            'position' => ['required', Rule::in(array_column(Position::cases(), 'value'))],
-            'dominantFoot' => ['required', Rule::in(array_column(DominantFoot::cases(), 'value'))],
-            'guardianName' => ['required', 'string', 'max:255'],
-            'guardianEmail' => ['required', 'email', 'max:255'],
-            'guardianPhone' => ['nullable', 'string', 'max:20'],
-        ];
-    }
+    #[Validate('nullable|string|max:20')]
+    public string $guardian_phone = '';
 
     public function messages(): array
     {
         return [
-            'name.required' => 'O nome do atleta é obrigatório.',
-            'name.max' => 'O nome não pode ter mais de 255 caracteres.',
-            'dateOfBirth.required' => 'A data de nascimento é obrigatória.',
-            'dateOfBirth.date' => 'Informe uma data de nascimento válida.',
-            'dateOfBirth.before' => 'A data de nascimento deve ser anterior a hoje.',
-            'position.required' => 'A posição é obrigatória.',
-            'position.in' => 'Selecione uma posição válida.',
-            'dominantFoot.required' => 'O pé dominante é obrigatório.',
-            'dominantFoot.in' => 'Selecione um pé dominante válido.',
-            'guardianName.required' => 'O nome do responsável é obrigatório.',
-            'guardianName.max' => 'O nome do responsável não pode ter mais de 255 caracteres.',
-            'guardianEmail.required' => 'O e-mail do responsável é obrigatório.',
-            'guardianEmail.email' => 'Informe um e-mail válido para o responsável.',
-            'guardianEmail.max' => 'O e-mail não pode ter mais de 255 caracteres.',
-            'guardianPhone.max' => 'O telefone não pode ter mais de 20 caracteres.',
-        ];
-    }
-
-    public function toPlayerData(): array
-    {
-        return [
-            'name' => $this->name,
-            'date_of_birth' => $this->dateOfBirth,
-            'position' => $this->position,
-            'dominant_foot' => $this->dominantFoot,
-            'guardian_name' => $this->guardianName,
-            'guardian_email' => $this->guardianEmail,
-            'guardian_phone' => $this->guardianPhone,
+            'name.required'           => 'O nome do atleta é obrigatório.',
+            'name.max'                => 'O nome não pode ter mais de 255 caracteres.',
+            'date_of_birth.required'  => 'A data de nascimento é obrigatória.',
+            'date_of_birth.date'      => 'Informe uma data de nascimento válida.',
+            'date_of_birth.before'    => 'A data de nascimento deve ser anterior à data atual.',
+            'position.required'       => 'A posição é obrigatória.',
+            'dominant_foot.required'  => 'O pé dominante é obrigatório.',
+            'guardian_name.required'  => 'O nome do responsável é obrigatório.',
+            'guardian_name.max'       => 'O nome do responsável não pode ter mais de 255 caracteres.',
+            'guardian_email.required' => 'O e-mail do responsável é obrigatório.',
+            'guardian_email.email'    => 'Informe um e-mail válido para o responsável.',
+            'guardian_email.max'      => 'O e-mail do responsável não pode ter mais de 255 caracteres.',
+            'guardian_phone.max'      => 'O telefone não pode ter mais de 20 caracteres.',
         ];
     }
 }
