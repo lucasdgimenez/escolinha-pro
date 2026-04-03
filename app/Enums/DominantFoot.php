@@ -4,9 +4,9 @@ namespace App\Enums;
 
 enum DominantFoot: string
 {
-    case Right = 'right';
-    case Left = 'left';
-    case Both = 'both';
+    case Right = 'direito';
+    case Left = 'esquerdo';
+    case Both = 'ambidestro';
 
     public function label(): string
     {

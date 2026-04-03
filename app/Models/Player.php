@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use App\Enums\DominantFoot;
-use App\Enums\PlayerPosition;
+use App\Enums\Position;
 use App\Models\Concerns\HasTenant;
 use Database\Factories\PlayerFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -32,7 +32,7 @@ class Player extends Model
     {
         return [
             'date_of_birth' => 'date',
-            'position'      => PlayerPosition::class,
+            'position'      => Position::class,
             'dominant_foot' => DominantFoot::class,
         ];
     }

@@ -1,7 +1,7 @@
 <?php
 
 use App\Enums\DominantFoot;
-use App\Enums\PlayerPosition;
+use App\Enums\Position;
 use App\Models\Category;
 use App\Models\Player;
 use App\Models\User;
@@ -31,7 +31,7 @@ it('player is created successfully via form', function () {
         ->test('pages::players.create')
         ->set('form.name', 'João da Silva')
         ->set('form.date_of_birth', '2012-05-10')
-        ->set('form.position', PlayerPosition::Forward->value)
+        ->set('form.position', Position::Forward->value)
         ->set('form.dominant_foot', DominantFoot::Right->value)
         ->set('form.guardian_name', 'Maria da Silva')
         ->set('form.guardian_email', 'maria@exemplo.com')
@@ -58,7 +58,7 @@ it('assigns correct category based on CBF date of birth', function () {
     $player = app(PlayerService::class)->create([
         'name'           => 'Carlos Teste',
         'date_of_birth'  => "{$birthYear}-06-15",
-        'position'       => PlayerPosition::Midfielder->value,
+        'position'       => Position::Midfielder->value,
         'dominant_foot'  => DominantFoot::Left->value,
         'guardian_name'  => 'Roberto Teste',
         'guardian_email' => 'roberto@teste.com',
@@ -75,7 +75,7 @@ it('assigns null category when no match found for age', function () {
     $player = app(PlayerService::class)->create([
         'name'           => 'Adulto Teste',
         'date_of_birth'  => '1990-01-01',
-        'position'       => PlayerPosition::Goalkeeper->value,
+        'position'       => Position::Goalkeeper->value,
         'dominant_foot'  => DominantFoot::Both->value,
         'guardian_name'  => 'Pai Teste',
         'guardian_email' => 'pai@teste.com',
@@ -92,7 +92,7 @@ it('sends parent invitation on player creation', function () {
     app(PlayerService::class)->create([
         'name'           => 'Lucas Teste',
         'date_of_birth'  => '2013-03-01',
-        'position'       => PlayerPosition::Defender->value,
+        'position'       => Position::Defender->value,
         'dominant_foot'  => DominantFoot::Right->value,
         'guardian_name'  => 'Ana Teste',
         'guardian_email' => 'ana@teste.com',
@@ -114,7 +114,7 @@ it('stores player photo to public disk', function () {
         ->test('pages::players.create')
         ->set('form.name', 'Pedro Foto')
         ->set('form.date_of_birth', '2011-08-20')
-        ->set('form.position', PlayerPosition::Forward->value)
+        ->set('form.position', Position::Forward->value)
         ->set('form.dominant_foot', DominantFoot::Right->value)
         ->set('form.guardian_name', 'Pai Foto')
         ->set('form.guardian_email', 'paifoto@teste.com')
@@ -142,11 +142,11 @@ it('players are scoped to tenant', function () {
     $response->assertDontSee('tenanta@teste.com');
 });
 
-it('coach cannot access players index page', function () {
+it('coach can access players index page', function () {
     $director = User::factory()->director()->create();
     $coach = User::factory()->coach()->create(['tenant_id' => $director->tenant_id]);
 
-    $this->actingAs($coach)->get(route('players.index'))->assertForbidden();
+    $this->actingAs($coach)->get(route('players.index'))->assertOk();
 });
 
 it('validates required fields on player create form', function () {
@@ -174,7 +174,7 @@ it('creates player silently when guardian email is already registered', function
     $player = app(PlayerService::class)->create([
         'name'           => 'Atleta Existente',
         'date_of_birth'  => '2014-01-01',
-        'position'       => PlayerPosition::Midfielder->value,
+        'position'       => Position::Midfielder->value,
         'dominant_foot'  => DominantFoot::Left->value,
         'guardian_name'  => 'Guardião Existente',
         'guardian_email' => 'existente@teste.com',

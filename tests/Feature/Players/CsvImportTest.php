@@ -1,7 +1,7 @@
 <?php
 
 use App\Enums\DominantFoot;
-use App\Enums\PlayerPosition;
+use App\Enums\Position;
 use App\Models\Player;
 use App\Models\User;
 use App\Notifications\InvitationNotification;
@@ -24,7 +24,7 @@ it('CSV import creates all valid players and sends parent invites', function () 
         [
             'name'           => 'Atleta Um',
             'date_of_birth'  => '2012-01-01',
-            'position'       => PlayerPosition::Forward->value,
+            'position'       => Position::Forward->value,
             'dominant_foot'  => DominantFoot::Right->value,
             'guardian_name'  => 'Pai Um',
             'guardian_email' => 'um@teste.com',
@@ -33,7 +33,7 @@ it('CSV import creates all valid players and sends parent invites', function () 
         [
             'name'           => 'Atleta Dois',
             'date_of_birth'  => '2013-03-15',
-            'position'       => PlayerPosition::Goalkeeper->value,
+            'position'       => Position::Goalkeeper->value,
             'dominant_foot'  => DominantFoot::Left->value,
             'guardian_name'  => 'Pai Dois',
             'guardian_email' => 'dois@teste.com',
@@ -58,7 +58,7 @@ it('CSV import with invalid rows returns partial success and error list', functi
         [
             'name'           => 'Atleta Válido',
             'date_of_birth'  => '2012-05-10',
-            'position'       => PlayerPosition::Midfielder->value,
+            'position'       => Position::Midfielder->value,
             'dominant_foot'  => DominantFoot::Right->value,
             'guardian_name'  => 'Pai Válido',
             'guardian_email' => 'valido@teste.com',
@@ -67,7 +67,7 @@ it('CSV import with invalid rows returns partial success and error list', functi
         [
             'name'           => 'Sem Email',
             'date_of_birth'  => '2013-01-01',
-            'position'       => PlayerPosition::Defender->value,
+            'position'       => Position::Defender->value,
             'dominant_foot'  => DominantFoot::Both->value,
             'guardian_name'  => 'Pai Sem Email',
             'guardian_email' => '',
@@ -92,7 +92,7 @@ it('CSV import silently skips invitation when guardian email is already register
         [
             'name'           => 'Atleta Guardião Existente',
             'date_of_birth'  => '2014-02-20',
-            'position'       => PlayerPosition::Forward->value,
+            'position'       => Position::Forward->value,
             'dominant_foot'  => DominantFoot::Left->value,
             'guardian_name'  => 'Guardião Já Cadastrado',
             'guardian_email' => 'jaexiste@teste.com',

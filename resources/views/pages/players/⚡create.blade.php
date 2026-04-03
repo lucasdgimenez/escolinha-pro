@@ -1,7 +1,7 @@
 <?php
 
 use App\Enums\DominantFoot;
-use App\Enums\PlayerPosition;
+use App\Enums\Position;
 use App\Livewire\Forms\PlayerForm;
 use App\Services\Players\PlayerService;
 use Livewire\Attributes\Title;
@@ -73,7 +73,7 @@ new #[Title('Novo atleta')] class extends Component
                 required
             >
                 <option value="">Selecione...</option>
-                @foreach (PlayerPosition::cases() as $position)
+                @foreach (Position::cases() as $position)
                     <option value="{{ $position->value }}" @selected($this->form->position === $position->value)>
                         {{ $position->label() }}
                     </option>

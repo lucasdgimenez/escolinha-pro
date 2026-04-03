@@ -3,7 +3,7 @@
 namespace Database\Factories;
 
 use App\Enums\DominantFoot;
-use App\Enums\PlayerPosition;
+use App\Enums\Position;
 use App\Models\Player;
 use App\Models\Tenant;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -20,7 +20,7 @@ class PlayerFactory extends Factory
             'category_id'    => null,
             'name'           => fake()->name(),
             'date_of_birth'  => fake()->dateTimeBetween('-17 years', '-5 years')->format('Y-m-d'),
-            'position'       => fake()->randomElement(PlayerPosition::cases()),
+            'position'       => fake()->randomElement(Position::cases()),
             'dominant_foot'  => fake()->randomElement(DominantFoot::cases()),
             'photo_path'     => null,
             'guardian_name'  => fake()->name(),
