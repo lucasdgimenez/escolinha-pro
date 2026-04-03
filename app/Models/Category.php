@@ -4,16 +4,17 @@ namespace App\Models;
 
 use App\Models\Concerns\HasTenant;
 use Database\Factories\CategoryFactory;
-use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use App\Models\TrainingSchedule;
+use App\Models\TrainingSession;
 
 class Category extends Model
 {
     /** @use HasFactory<CategoryFactory> */
-    use HasFactory, HasTenant, HasUuids;
+    use HasFactory, HasTenant;
 
     protected $fillable = [
         'tenant_id',
@@ -42,5 +43,15 @@ class Category extends Model
     public function coaches(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'coach_category', 'category_id', 'coach_id')->withTimestamps();
+    }
+
+    public function schedules(): HasMany
+    {
+        return $this->hasMany(TrainingSchedule::class);
+    }
+
+    public function sessions(): HasMany
+    {
+        return $this->hasMany(TrainingSession::class);
     }
 }

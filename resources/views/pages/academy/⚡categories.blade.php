@@ -69,7 +69,7 @@ new #[Title('Categorias')] class extends Component
         $this->dispatch('open-modal.categories');
     }
 
-    public function edit(string $id): void
+    public function edit(int $id): void
     {
         $category = Category::findOrFail($id);
         $this->editingId = $id;
@@ -105,7 +105,7 @@ new #[Title('Categorias')] class extends Component
         unset($this->categories);
     }
 
-    public function toggleActive(string $id): void
+    public function toggleActive(int $id): void
     {
         $category = Category::findOrFail($id);
         $category->update(['is_active' => ! $category->is_active]);

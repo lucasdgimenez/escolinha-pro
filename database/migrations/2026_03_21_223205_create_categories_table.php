@@ -9,8 +9,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('categories', function (Blueprint $table) {
-            $table->uuid('id')->primary();
-            $table->foreignUuid('tenant_id')->constrained()->cascadeOnDelete();
+            $table->id();
+            $table->foreignId('tenant_id')->constrained()->cascadeOnDelete();
             $table->string('name');
             $table->unsignedTinyInteger('min_age');
             $table->unsignedTinyInteger('max_age');

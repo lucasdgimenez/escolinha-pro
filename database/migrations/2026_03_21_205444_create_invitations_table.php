@@ -9,11 +9,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('invitations', function (Blueprint $table) {
-            $table->uuid('id')->primary();
-            $table->foreignUuid('tenant_id')->constrained()->cascadeOnDelete();
-            $table->foreignUuid('invited_by')->constrained('users')->cascadeOnDelete();
+            $table->id();
+            $table->foreignId('tenant_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('invited_by')->constrained('users')->cascadeOnDelete();
             $table->string('email');
-            $table->foreignUuid('role_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('role_id')->constrained()->cascadeOnDelete();
             $table->string('token', 64)->unique();
             $table->timestamp('expires_at');
             $table->timestamp('accepted_at')->nullable();

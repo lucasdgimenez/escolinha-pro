@@ -34,7 +34,7 @@ new #[Title('Convites')] class extends Component
         }
     }
 
-    public function resend(string $id, InvitationService $service): void
+    public function resend(int $id, InvitationService $service): void
     {
         $invitation = Invitation::findOrFail($id);
         $service->resend($invitation);

@@ -9,9 +9,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('players', function (Blueprint $table) {
-            $table->uuid('id')->primary();
-            $table->foreignUuid('tenant_id')->constrained()->cascadeOnDelete();
-            $table->foreignUuid('category_id')->nullable()->constrained()->nullOnDelete();
+            $table->id();
+            $table->foreignId('tenant_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('category_id')->nullable()->constrained()->nullOnDelete();
             $table->string('name');
             $table->date('date_of_birth');
             $table->string('position');

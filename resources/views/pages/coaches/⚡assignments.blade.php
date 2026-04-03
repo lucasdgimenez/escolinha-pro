@@ -29,7 +29,7 @@ new #[Title('Atribuições de Treinadores')] class extends Component
         return Category::where('is_active', true)->orderBy('min_age')->get();
     }
 
-    public function openEdit(string $coachId): void
+    public function openEdit(int $coachId): void
     {
         $coach = User::withoutGlobalScopes()->findOrFail($coachId);
         $this->editingCoachId = $coach->id;

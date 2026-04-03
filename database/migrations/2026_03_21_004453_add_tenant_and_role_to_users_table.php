@@ -12,8 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->foreignUuid('tenant_id')->nullable()->after('id')->constrained()->nullOnDelete();
-            $table->foreignUuid('role_id')->after('tenant_id')->constrained();
+            $table->foreignId('tenant_id')->nullable()->after('id')->constrained()->nullOnDelete();
+            $table->foreignId('role_id')->after('tenant_id')->constrained();
             $table->string('phone')->nullable()->after('email');
             $table->softDeletes();
         });

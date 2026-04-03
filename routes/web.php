@@ -46,5 +46,11 @@ Route::middleware('auth')->group(function () {
         Route::livewire('/academia', 'pages::academy.profile')->name('academy.profile');
         Route::livewire('/categorias', 'pages::academy.categories')->name('academy.categories');
         Route::livewire('/treinadores/atribuicoes', 'pages::coaches.assignments')->name('coaches.assignments');
+        Route::livewire('/cronogramas', 'pages::schedules.index')->name('schedules.index');
+        Route::livewire('/cronogramas/criar', 'pages::schedules.create')->name('schedules.create');
+    });
+
+    Route::middleware(['verified', 'role:super_admin,academy_director,coach'])->group(function () {
+        Route::livewire('/sessoes/criar', 'pages::sessions.create')->name('sessions.create');
     });
 });
