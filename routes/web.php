@@ -51,6 +51,8 @@ Route::middleware('auth')->group(function () {
     });
 
     Route::middleware(['verified', 'role:super_admin,academy_director,coach'])->group(function () {
+        Route::livewire('/sessoes', 'pages::sessions.index')->name('sessions.index');
         Route::livewire('/sessoes/criar', 'pages::sessions.create')->name('sessions.create');
+        Route::livewire('/sessoes/{session}', 'pages::sessions.show')->name('sessions.show');
     });
 });
