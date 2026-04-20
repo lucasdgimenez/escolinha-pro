@@ -54,5 +54,8 @@ Route::middleware('auth')->group(function () {
         Route::livewire('/sessoes', 'pages::sessions.index')->name('sessions.index');
         Route::livewire('/sessoes/criar', 'pages::sessions.create')->name('sessions.create');
         Route::livewire('/sessoes/{session}', 'pages::sessions.show')->name('sessions.show');
+        Route::livewire('/jogadores/{player}', 'pages::players.show')->name('players.show');
+        Route::livewire('/avaliacoes/criar', 'pages::evaluations.create')->name('evaluations.create');
+        Route::livewire('/avaliacoes/{evaluation}', 'pages::evaluations.show')->name('evaluations.show');
     });
 });

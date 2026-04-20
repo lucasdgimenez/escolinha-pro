@@ -47,4 +47,9 @@ class Player extends Model
     {
         return $this->hasMany(SessionAttendance::class);
     }
+
+    public function evaluations(): HasMany
+    {
+        return $this->hasMany(Evaluation::class);
+    }
 }
